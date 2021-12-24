@@ -6,7 +6,19 @@
 
 <script>
 
-    var margin = {top: 10, right: 30, bottom: 30, left: 60},
+    function getMinMax(arr) {
+        let min = arr[0];
+        let max = arr[0];
+        let i = arr.length;
+
+        while (i--) {
+            min = arr[i] < min ? arr[i] : min;
+            max = arr[i] > max ? arr[i] : max;
+        }
+        return { min, max };
+    }
+
+    const margin = {top: 10, right: 30, bottom: 30, left: 60},
         width = 460 - margin.left - margin.right,
         height = 400 - margin.top - margin.bottom;
 
@@ -18,9 +30,15 @@
         .attr("transform", `translate(${margin.left}, ${margin.top})`);
 
     d3.csv("https://raw.githubusercontent.com/jvermeir/chart/main/dates.csv").then(function (rawData) {
+        let min = "2030";
+        let max = "2000";
+
         const countPerMonth = rawData.reduce((acc, value) => {
             const parts = value.date.split("/");
-            const key = parts[1] + "/" + parts[2];
+            const year = "20" + parts[2];
+            const key = parts[2] + "/" + parts[1];
+            min = year< min ? year: min;
+            max = year > max ? year : max;
             if (!acc[key]) {
                 acc[key] = 1;
             } else {
@@ -31,14 +49,14 @@
 
         const data = Object.keys(countPerMonth).map(x => {
             const parts = x.split("/");
-            const year = "20" + parts[1];
-            const month = parts[0];
+            const year = "20" + parts[0];
+            const month = parts[1];
             const count = countPerMonth[x];
             return {year, month, count};
         });
 
         const x = d3.scaleLinear()
-            .domain(["2004", "2021"])
+            .domain([min, max])
             .range([0, width]);
         svg.append("g")
             .attr("transform", `translate(0, ${height})`)
