@@ -1,0 +1,67 @@
+<!-- inspired by d3-graph-gallery.com -->
+<!DOCTYPE html>
+<meta charset="utf-8">
+<script src="https://d3js.org/d3.v6.js"></script>
+<div id="plot"></div>
+<div id="container"></div>
+<script type="text/javascript"charset="utf-8">
+    var div = document.getElementById('container');
+    var data = 'heading1,heading2,heading3,heading4,heading5\nvalue1_1,value2_1,value3_1,value4_1,value5_1\nvalue1_2,value2_2,value3_2,value4_2,value5_2';
+    var lines = data.split("\n"), output = [], i;
+
+    /* HEADERS */
+    output.push("<tr><th>"
+        + lines[0].slice().split(",").join("</th><th>")
+        + "</th></tr>");
+
+    for (i = 1; i < lines.length; i++)
+        output.push("<tr><td>"
+            + lines[i].slice().split(",").join("</td><td>")
+            + "</td></tr>");
+
+    output = "<table><tbody>"
+        + output.join("") + "</tbody></table>";
+
+    div.innerHTML = output;
+</script>
+
+<!--<script>-->
+
+<!--    const margin = {top: 10, right: 30, bottom: 30, left: 60},-->
+<!--        width = 460 - margin.left - margin.right,-->
+<!--        height = 400 - margin.top - margin.bottom;-->
+
+<!--    const svg = d3.select("#count_per_month")-->
+<!--        .append("svg")-->
+<!--        .attr("width", width + margin.left + margin.right)-->
+<!--        .attr("height", height + margin.top + margin.bottom)-->
+<!--        .append("g")-->
+<!--        .attr("transform", `translate(${margin.left}, ${margin.top})`);-->
+
+<!--    d3.csv("https://raw.githubusercontent.com/jvermeir/chart/main/onderzoek/bloedonderzoek.csv").then(function (rawData) {-->
+
+<!--        // TODO-->
+<!--        const x = d3.scaleLinear()-->
+<!--            .domain([0, 100])-->
+<!--            .range([0, width]);-->
+<!--        svg.append("g")-->
+<!--            .attr("transform", `translate(0, ${height})`)-->
+<!--            .call(d3.axisBottom(x));-->
+
+<!--        const y = d3.scaleLinear()-->
+<!--            .domain([0, 12])-->
+<!--            .range([height, 0]);-->
+<!--        svg.append("g")-->
+<!--            .call(d3.axisLeft(y));-->
+
+<!--        svg.append('g')-->
+<!--            .selectAll("dot")-->
+<!--            .data(data)-->
+<!--            .join("circle")-->
+<!--            .attr("cx", function (d) {return x(d.year);})-->
+<!--            .attr("cy", function (d) {return y(d.month);})-->
+<!--            .attr("r", function (d) {return 5 * d.count;})-->
+<!--            .style("fill", "#7220ad")-->
+<!--    })-->
+
+<!--</script>-->
