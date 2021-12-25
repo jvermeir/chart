@@ -55,6 +55,37 @@
             return {year, month, count};
         });
 
+        var Tooltip = d3.select("#count_per_month")
+            .append("div")
+            .style("opacity", 0)
+            .attr("class", "tooltip")
+            .style("background-color", "white")
+            .style("border", "solid")
+            .style("border-width", "2px")
+            .style("border-radius", "5px")
+            .style("padding", "5px")
+        const mouseover = function(d) {
+            Tooltip
+                .style("opacity", 1)
+            d3.select(this)
+                .style("stroke", "black")
+                .style("opacity", 1)
+        }
+        const mousemove = function(d) {
+            const data = d.currentTarget.__data__;
+            Tooltip
+                .html(`${data.year}/${data.month}: ${data.count}`)
+                .style("left", (d3.pointer(this)[0]+70) + "px")
+                .style("top", (d3.pointer(this)[1]) + "px")
+        }
+        var mouseleave = function(d) {
+            Tooltip
+                .style("opacity", 0)
+            d3.select(this)
+                .style("stroke", "none")
+                .style("opacity", 0.8)
+        }
+
         const x = d3.scaleLinear()
             .domain([min, max])
             .range([0, width]);
@@ -76,6 +107,9 @@
             .attr("cy", function (d) {return y(d.month);})
             .attr("r", function (d) {return 5 * d.count;})
             .style("fill", "#7220ad")
+            .on("mouseover", mouseover)
+            .on("mousemove", mousemove)
+            .on("mouseleave", mouseleave)
     })
 
 </script>
